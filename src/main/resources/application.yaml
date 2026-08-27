@@ -16,3 +16,7 @@ spring:
     host: localhost
     port: 27017
     database: cart-service
+
+products:
+  client:
+    API: https://fakestoreapi.com/products
