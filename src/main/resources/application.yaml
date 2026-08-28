@@ -19,4 +19,4 @@ spring:
 
 products:
   client:
-    API: https://fakestoreapi.com/products
+    API: https://fakestoreapi.com/

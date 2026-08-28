@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "FakeStoreAPI", url = "${products.client.API")
+@FeignClient(name = "FakeStoreAPI", url = "${products.client.API}")
 public interface StoreClient {
 
     @GetMapping("products/")
-    public List<ClientProductResponse> getAllProducts();
+    List<ClientProductResponse> getAllProducts();
 
     @GetMapping("products/{id}")
-    public ClientProductResponse getProductById(@PathVariable Long id);
+    ClientProductResponse getProductById(@PathVariable Long id);
 
 }
