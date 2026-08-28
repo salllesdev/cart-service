@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -46,6 +47,29 @@ public class BasketService {
                 .status(Status.OPEN)
                 .build();
 
+        basket.calculateTotalPrice();
+        return repository.save(basket);
+    }
+
+    public Basket updateById(String id, BasketRequest request) {
+        Basket basket = getBasket(id);
+
+        if (basket.getStatus() != Status.OPEN) {
+            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser atualizada");
+        }
+
+        List<Product> products = request.products().stream().map(p -> {
+            ClientProductResponse clientProductResponse = productService.getById(p.id());
+
+            return Product.builder()
+                    .id(clientProductResponse.id())
+                    .title(clientProductResponse.title())
+                    .price(clientProductResponse.price())
+                    .quantity(p.quantity())
+                    .build();
+        }).toList();
+
+        basket.setProducts(products);
         basket.calculateTotalPrice();
         return repository.save(basket);
     }
