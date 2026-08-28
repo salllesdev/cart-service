@@ -2,7 +2,9 @@ package dev.salllesdev.cartservice.service;
 
 import dev.salllesdev.cartservice.DTO.BasketRequest;
 import dev.salllesdev.cartservice.DTO.ClientProductResponse;
+import dev.salllesdev.cartservice.DTO.PaymentMethodRequest;
 import dev.salllesdev.cartservice.entity.Basket;
+import dev.salllesdev.cartservice.entity.PaymentMethod;
 import dev.salllesdev.cartservice.entity.Product;
 import dev.salllesdev.cartservice.entity.Status;
 import dev.salllesdev.cartservice.repository.BasketRepository;
@@ -71,6 +73,17 @@ public class BasketService {
 
         basket.setProducts(products);
         basket.calculateTotalPrice();
+        return repository.save(basket);
+    }
+
+    public Basket payBasket(String id, PaymentMethodRequest method) {
+        Basket basket = getBasket(id);
+        if (basket.getStatus() != Status.OPEN) {
+            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser paga");
+        }
+
+        basket.setPaymentMethod(method.method());
+        basket.setStatus(Status.SOLD);
         return repository.save(basket);
     }
 }
