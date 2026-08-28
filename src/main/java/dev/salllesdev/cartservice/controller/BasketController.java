@@ -23,4 +23,9 @@ public class BasketController {
         return service.createBasket(request);
     }
 
+    @PutMapping("/{id}")
+    public Basket updateById(@PathVariable String id, @RequestBody BasketRequest request) {
+        return service.updateById(id, request);
+    }
+
 }
