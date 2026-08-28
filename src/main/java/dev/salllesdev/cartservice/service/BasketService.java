@@ -18,6 +18,11 @@ public class BasketService {
     private final BasketRepository repository;
     private final ProductService productService;
 
+    public Basket getBasket(String id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("cesta não encontrada"));
+    }
+
     public Basket createBasket(BasketRequest request) {
         repository.findByClientIdAndStatus(request.clientId(), Status.OPEN)
                 .ifPresent(Basket -> {
