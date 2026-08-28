@@ -1,0 +1,34 @@
+package dev.salllesdev.cartservice.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "basket")
+public class Basket {
+
+    @Id
+    private String id;
+    private Long Client;
+    private BigDecimal totalPrice;
+    private List<Product> products;
+    private Status status;
+
+    public void calculateTotalPrice() {
+        this.totalPrice = products.stream()
+                .map(p -> p.getPrice()
+                        .multiply(BigDecimal.valueOf(p.getQuantity()))
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+}
