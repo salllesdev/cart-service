@@ -1,6 +1,7 @@
 package dev.salllesdev.cartservice.controller;
 
 import dev.salllesdev.cartservice.DTO.BasketRequest;
+import dev.salllesdev.cartservice.DTO.PaymentMethodRequest;
 import dev.salllesdev.cartservice.entity.Basket;
 import dev.salllesdev.cartservice.service.BasketService;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +29,8 @@ public class BasketController {
         return service.updateById(id, request);
     }
 
+    @PutMapping("/{id}/payment")
+    public Basket payBasket(@PathVariable String id, @RequestBody PaymentMethodRequest method) {
+        return service.payBasket(id, method);
+    }
 }
