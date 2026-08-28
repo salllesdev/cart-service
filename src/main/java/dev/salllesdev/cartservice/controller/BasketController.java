@@ -13,7 +13,12 @@ public class BasketController {
 
     private final BasketService service;
 
-    @PostMapping
+    @GetMapping("/{id}")
+    public Basket getBasket(@PathVariable String id) {
+        return service.getBasket(id);
+    }
+
+    @PostMapping("/")
     public Basket createBasket(@RequestBody BasketRequest request) {
         return service.createBasket(request);
     }
