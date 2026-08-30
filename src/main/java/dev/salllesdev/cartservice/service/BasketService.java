@@ -32,16 +32,7 @@ public class BasketService {
                     throw new IllegalArgumentException("ja existe uma cesta aberta para esse cliente");
                 });
 
-        List<Product> products = request.products().stream().map(p -> {
-            ClientProductResponse clientProductResponse = productService.getById(p.id());
-
-            return Product.builder()
-                    .id(clientProductResponse.id())
-                    .title(clientProductResponse.title())
-                    .price(clientProductResponse.price())
-                    .quantity(p.quantity())
-                    .build();
-        }).toList();
+        List<Product> products = productService.getProductsById(request.products());
 
         Basket basket = Basket.builder()
                 .Client(request.clientId())
@@ -60,16 +51,7 @@ public class BasketService {
             throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser atualizada");
         }
 
-        List<Product> products = request.products().stream().map(p -> {
-            ClientProductResponse clientProductResponse = productService.getById(p.id());
-
-            return Product.builder()
-                    .id(clientProductResponse.id())
-                    .title(clientProductResponse.title())
-                    .price(clientProductResponse.price())
-                    .quantity(p.quantity())
-                    .build();
-        }).toList();
+        List<Product> products = productService.getProductsById(request.products());
 
         basket.setProducts(products);
         basket.calculateTotalPrice();
