@@ -33,4 +33,9 @@ public class BasketController {
     public Basket payBasket(@PathVariable String id, @RequestBody PaymentMethodRequest method) {
         return service.payBasket(id, method);
     }
+
+    @PutMapping("/{id}/cancel")
+    public Basket cancelBasket(@PathVariable String id) {
+        return service.cancelBasket(id);
+    }
 }
