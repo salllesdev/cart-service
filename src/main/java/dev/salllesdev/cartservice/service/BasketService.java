@@ -7,6 +7,7 @@ import dev.salllesdev.cartservice.entity.Basket;
 import dev.salllesdev.cartservice.entity.PaymentMethod;
 import dev.salllesdev.cartservice.entity.Product;
 import dev.salllesdev.cartservice.entity.Status;
+import dev.salllesdev.cartservice.exceptions.BussinesException;
 import dev.salllesdev.cartservice.exceptions.DataNotFoundException;
 import dev.salllesdev.cartservice.repository.BasketRepository;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class BasketService {
     public Basket createBasket(BasketRequest request) {
         repository.findByClientIdAndStatus(request.clientId(), Status.OPEN)
                 .ifPresent(Basket -> {
-                    throw new IllegalArgumentException("ja existe uma cesta aberta para esse cliente");
+                    throw new BussinesException("ja existe uma cesta aberta para esse cliente");
                 });
 
         List<Product> products = productService.getProductsById(request.products());
@@ -47,9 +48,8 @@ public class BasketService {
 
     public Basket updateById(String id, BasketRequest request) {
         Basket basket = getBasket(id);
-
         if (basket.getStatus() != Status.OPEN) {
-            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser atualizada");
+            throw new BussinesException("a cesta precisa estar com o status \"aberto\" para ser atualizada");
         }
 
         List<Product> products = productService.getProductsById(request.products());
@@ -62,7 +62,7 @@ public class BasketService {
     public Basket payBasket(String id, PaymentMethodRequest method) {
         Basket basket = getBasket(id);
         if (basket.getStatus() != Status.OPEN) {
-            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser paga");
+            throw new BussinesException("a cesta precisa estar com o status \"aberto\" para ser paga");
         }
 
         basket.setPaymentMethod(method.method());
@@ -73,8 +73,9 @@ public class BasketService {
     public Basket cancelBasket(String id) {
         Basket basket = getBasket(id);
         if (basket.getStatus() != Status.OPEN) {
-            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser cancelada");
+            throw new BussinesException("a cesta precisa estar com o status \"aberto\" para ser cancelada");
         }
+
         basket.setStatus(Status.CANCELED);
         return repository.save(basket);
     }
