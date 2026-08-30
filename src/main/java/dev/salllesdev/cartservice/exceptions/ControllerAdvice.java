@@ -14,4 +14,9 @@ public class ControllerAdvice {
         return ex.getMessage();
     }
 
+    @ExceptionHandler(BussinesException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String HandleBussinesException(BussinesException ex) {
+        return ex.getMessage();
+    }
 }
