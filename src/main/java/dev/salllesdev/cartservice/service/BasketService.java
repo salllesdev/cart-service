@@ -7,6 +7,7 @@ import dev.salllesdev.cartservice.entity.Basket;
 import dev.salllesdev.cartservice.entity.PaymentMethod;
 import dev.salllesdev.cartservice.entity.Product;
 import dev.salllesdev.cartservice.entity.Status;
+import dev.salllesdev.cartservice.exceptions.DataNotFoundException;
 import dev.salllesdev.cartservice.repository.BasketRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class BasketService {
 
     public Basket getBasket(String id) {
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("cesta não encontrada"));
+                .orElseThrow(() -> new DataNotFoundException("cesta não encontrada"));
     }
 
     public Basket createBasket(BasketRequest request) {
