@@ -86,4 +86,13 @@ public class BasketService {
         basket.setStatus(Status.SOLD);
         return repository.save(basket);
     }
+
+    public Basket cancelBasket(String id) {
+        Basket basket = getBasket(id);
+        if (basket.getStatus() != Status.OPEN) {
+            throw new IllegalArgumentException("a cesta precisa estar com o status \"aberto\" para ser cancelada");
+        }
+        basket.setStatus(Status.CANCELED);
+        return repository.save(basket);
+    }
 }
