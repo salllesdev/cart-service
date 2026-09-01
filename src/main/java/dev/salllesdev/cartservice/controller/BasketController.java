@@ -8,7 +8,8 @@ import dev.salllesdev.cartservice.mapper.BasketMapper;
 import dev.salllesdev.cartservice.service.BasketService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.mapper.Mapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,32 +21,37 @@ public class BasketController {
     private final BasketMapper mapper;
 
     @GetMapping("/{id}")
-    public BasketResponse getBasket(@PathVariable String id) {
+    public ResponseEntity<BasketResponse> getBasket(@PathVariable String id) {
         Basket basket = service.getBasket(id);
-        return mapper.map(basket);
+        BasketResponse response = mapper.map(basket);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/")
-    public BasketResponse createBasket(@RequestBody @Valid BasketRequest request) {
+    public ResponseEntity<BasketResponse> createBasket(@RequestBody @Valid BasketRequest request) {
         Basket basket = service.createBasket(request);
-        return mapper.map(basket);
+        BasketResponse response = mapper.map(basket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
-    public BasketResponse updateById(@PathVariable String id, @RequestBody @Valid BasketRequest request) {
+    public ResponseEntity<BasketResponse> updateById(@PathVariable String id, @RequestBody @Valid BasketRequest request) {
         Basket basket = service.updateById(id, request);
-        return mapper.map(basket);
+        BasketResponse response = mapper.map(basket);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}/payment")
-    public BasketResponse payBasket(@PathVariable String id, @RequestBody @Valid PaymentMethodRequest method) {
+    public ResponseEntity<BasketResponse> payBasket(@PathVariable String id, @RequestBody @Valid PaymentMethodRequest method) {
         Basket basket = service.payBasket(id, method);
-        return mapper.map(basket);
+        BasketResponse response = mapper.map(basket);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}/cancel")
-    public BasketResponse cancelBasket(@PathVariable String id) {
+    public ResponseEntity<BasketResponse> cancelBasket(@PathVariable String id) {
         Basket basket = service.cancelBasket(id);
-        return mapper.map(basket);
+        BasketResponse response = mapper.map(basket);
+        return ResponseEntity.ok(response);
     }
 }
