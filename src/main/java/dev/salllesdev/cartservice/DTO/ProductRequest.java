@@ -1,4 +1,13 @@
 package dev.salllesdev.cartservice.DTO;
 
-public record ProductRequest(Long id, Integer quantity) {
-}
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record ProductRequest(
+
+        @NotNull
+        Long id,
+
+        @Positive
+        Integer quantity
+) {}
