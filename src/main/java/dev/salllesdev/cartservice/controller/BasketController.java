@@ -6,6 +6,7 @@ import dev.salllesdev.cartservice.DTO.PaymentMethodRequest;
 import dev.salllesdev.cartservice.entity.Basket;
 import dev.salllesdev.cartservice.mapper.BasketMapper;
 import dev.salllesdev.cartservice.service.BasketService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.mapper.Mapper;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +26,19 @@ public class BasketController {
     }
 
     @PostMapping("/")
-    public BasketResponse createBasket(@RequestBody BasketRequest request) {
+    public BasketResponse createBasket(@RequestBody @Valid BasketRequest request) {
         Basket basket = service.createBasket(request);
         return mapper.map(basket);
     }
 
     @PutMapping("/{id}")
-    public BasketResponse updateById(@PathVariable String id, @RequestBody BasketRequest request) {
+    public BasketResponse updateById(@PathVariable String id, @RequestBody @Valid BasketRequest request) {
         Basket basket = service.updateById(id, request);
         return mapper.map(basket);
     }
 
     @PutMapping("/{id}/payment")
-    public BasketResponse payBasket(@PathVariable String id, @RequestBody PaymentMethodRequest method) {
+    public BasketResponse payBasket(@PathVariable String id, @RequestBody @Valid PaymentMethodRequest method) {
         Basket basket = service.payBasket(id, method);
         return mapper.map(basket);
     }
