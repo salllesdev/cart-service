@@ -1,10 +1,13 @@
 package dev.salllesdev.cartservice.controller;
 
 import dev.salllesdev.cartservice.DTO.BasketRequest;
+import dev.salllesdev.cartservice.DTO.BasketResponse;
 import dev.salllesdev.cartservice.DTO.PaymentMethodRequest;
 import dev.salllesdev.cartservice.entity.Basket;
+import dev.salllesdev.cartservice.mapper.BasketMapper;
 import dev.salllesdev.cartservice.service.BasketService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,29 +16,35 @@ import org.springframework.web.bind.annotation.*;
 public class BasketController {
 
     private final BasketService service;
+    private final BasketMapper mapper;
 
     @GetMapping("/{id}")
-    public Basket getBasket(@PathVariable String id) {
-        return service.getBasket(id);
+    public BasketResponse getBasket(@PathVariable String id) {
+        Basket basket = service.getBasket(id);
+        return mapper.map(basket);
     }
 
     @PostMapping("/")
-    public Basket createBasket(@RequestBody BasketRequest request) {
-        return service.createBasket(request);
+    public BasketResponse createBasket(@RequestBody BasketRequest request) {
+        Basket basket = service.createBasket(request);
+        return mapper.map(basket);
     }
 
     @PutMapping("/{id}")
-    public Basket updateById(@PathVariable String id, @RequestBody BasketRequest request) {
-        return service.updateById(id, request);
+    public BasketResponse updateById(@PathVariable String id, @RequestBody BasketRequest request) {
+        Basket basket = service.updateById(id, request);
+        return mapper.map(basket);
     }
 
     @PutMapping("/{id}/payment")
-    public Basket payBasket(@PathVariable String id, @RequestBody PaymentMethodRequest method) {
-        return service.payBasket(id, method);
+    public BasketResponse payBasket(@PathVariable String id, @RequestBody PaymentMethodRequest method) {
+        Basket basket = service.payBasket(id, method);
+        return mapper.map(basket);
     }
 
     @PutMapping("/{id}/cancel")
-    public Basket cancelBasket(@PathVariable String id) {
-        return service.cancelBasket(id);
+    public BasketResponse cancelBasket(@PathVariable String id) {
+        Basket basket = service.cancelBasket(id);
+        return mapper.map(basket);
     }
 }
